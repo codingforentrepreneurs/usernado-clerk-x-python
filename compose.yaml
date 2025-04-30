@@ -1,0 +1,18 @@
+services:
+  react_app:
+    # image: node:lts-slim
+    build: 
+      context: ./react_clerk
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./react_clerk/index.html:/app/index.html
+      - ./react_clerk/src:/app/src
+      - ./react_clerk/public:/app/public
+      # - ./react_clerk:/app
+    env_file:
+      - .env
+    ports:
+      - 5173:5173
+    # working_dir: /app
+    # command: sh -c "npm run dev -- --host"
+    

@@ -6,7 +6,7 @@ services:
     volumes:
       - ./django_clerk/src:/app
     env_file:
-      - .env
+      - .env.backend.local
     ports:
       - 8888:8888
     develop:

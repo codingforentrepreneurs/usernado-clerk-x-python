@@ -9,6 +9,12 @@ services:
       - .env
     ports:
       - 8888:8888
+    develop:
+      watch:
+        - action: rebuild
+          path: django_clerk/Dockerfile.dev
+        - action: rebuild
+          path: django_clerk/requirements.txt
   react_app:
     # image: node:lts-slim
     build: 
@@ -22,7 +28,15 @@ services:
     env_file:
       - .env
     ports:
-      - 5173:5173
+      - 3002:3002
     # working_dir: /app
     # command: sh -c "npm run dev -- --host"
+    develop:
+      watch:
+        - action: rebuild
+          path: react_clerk/vite.config.js
+        - action: rebuild
+          path: react_clerk/Dockerfile.dev
+        - action: rebuild
+          path: react_clerk/package.json
     

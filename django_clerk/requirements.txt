@@ -1,3 +1,4 @@
 Django>=5.2,<5.3
 requests
 django-cors-headers
+clerk-backend-api

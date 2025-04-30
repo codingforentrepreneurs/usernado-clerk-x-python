@@ -1,4 +1,14 @@
 services:
+  django_app:
+    build: 
+      context: ./django_clerk
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./django_clerk/src:/app
+    env_file:
+      - .env
+    ports:
+      - 8888:8888
   react_app:
     # image: node:lts-slim
     build: 

@@ -9,6 +9,7 @@ function App() {
   const [count, setCount] = useState(0)
   const {user} = useUser()
   const {userId, getToken} = useAuth()
+  const [displayData, setDisplayData] = useState()
 
   const handleSendUserDataToTheBackend = useCallback(async ()=>{
     const token = await getToken()
@@ -22,30 +23,48 @@ function App() {
     })
     if (response.ok) {
       const data = await response.json()
-      console.log(data)
+      setDisplayData(data)
     } else {
       const text = await response.text()
-      console.log(text)
+      setDisplayData(text)
     }
   }, [user, userId, getToken])
 
 
+  const callFastAPIBackend = useCallback(async ()=>{
+    const token = await getToken()
+    const requestHeaders = {
+      "Authorization": `Bearer ${token}`
+    }
+    console.log(user, userId)
+    // call Django / FastAPI backend
+    const response = await fetch("http://localhost:8002/", {
+      headers: requestHeaders
+    })
+    if (response.ok) {
+      const data = await response.json()
+      setDisplayData(data)
+    } else {
+      const text = await response.text()
+      setDisplayData(text)
+    }
+  }, [user, userId, getToken])
 
   
 
   return (
     <>
       <Navbar />
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Vite + React + Clerk</h1>
-      <button onClick={handleSendUserDataToTheBackend}>Trigger Backend</button>
+
+      <div>
+        {displayData && JSON.stringify(displayData)}
+      </div>
+      <div>
+      <button onClick={handleSendUserDataToTheBackend}>Call Django Backend</button>
+
+      <button onClick={callFastAPIBackend}>Call FastAPI Backend</button>
+      </div>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}

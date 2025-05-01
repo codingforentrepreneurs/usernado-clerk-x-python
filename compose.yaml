@@ -15,6 +15,22 @@ services:
           path: django_clerk/Dockerfile.dev
         - action: rebuild
           path: django_clerk/requirements.txt
+  fastapi_app:
+    build: 
+      context: ./fastapi_clerk
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./fastapi_clerk/src:/app
+    env_file:
+      - .env.backend.local
+    ports:
+      - 8002:8002
+    develop:
+      watch:
+        - action: rebuild
+          path: fastapi_clerk/Dockerfile.dev
+        - action: rebuild
+          path: fastapi_clerk/requirements.txt
   react_app:
     # image: node:lts-slim
     build: 

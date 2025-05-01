@@ -31,6 +31,32 @@ services:
           path: fastapi_clerk/Dockerfile.dev
         - action: rebuild
           path: fastapi_clerk/requirements.txt
+
+  nextjs_app:
+    build: 
+      context: ./nextjs_clerk
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./nextjs_clerk/public:/app/public
+      - ./nextjs_clerk/src:/app/src
+      - ./nextjs_clerk/package.json:/app/package.json
+      - ./nextjs_clerk/jsconfig.json:/app/jsconfig.json
+      - ./nextjs_clerk/next.config.mjs:/app/next.config.mjs
+      - ./nextjs_clerk/postcss.config.mjs:/app/postcss.config.mjs
+    working_dir: /app
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+    develop:
+      watch:
+        - action: rebuild
+          path: nextjs_clerk/Dockerfile.dev
+        - action: rebuild
+          path: nextjs_clerk/package.json
   react_app:
     # image: node:lts-slim
     build: 

@@ -12,6 +12,7 @@ warnings.filterwarnings("ignore", module="clerk_backend_api")
 warnings.filterwarnings("ignore", module="pydantic")
 
 CLERK_SECRET_KEY = settings.CLERK_SECRET_KEY
+CLERK_AUTH_PARTIES = settings.CLERK_AUTH_PARTIES
 
 User = get_user_model()
 
@@ -21,7 +22,7 @@ def get_clerk_user_id_from_request(request):
     request_state = sdk.authenticate_request(
         request,
         AuthenticateRequestOptions(
-            authorized_parties=['http://localhost:3002']
+            authorized_parties=CLERK_AUTH_PARTIES
         )
     )
     if not request_state.is_signed_in:

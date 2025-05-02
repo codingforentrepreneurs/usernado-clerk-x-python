@@ -1,13 +1,14 @@
 "use client"
 
 import { useAuth } from "@clerk/nextjs";
-import { useRef } from "react"
+import { useRef, useState } from "react"
 
 const DJANGO_API_BACKEND = "http://localhost:8888/api/posts/"
 const FASTAPI_API_BACKEND = "http://localhost:8002/api/posts/"
 
 export default function PostCreateForm() {
     const { getToken } = useAuth();
+    const [data, setData] = useState('')
     const formRef = useRef(null)
 
     const handleSubmit = async event => {
@@ -25,9 +26,10 @@ export default function PostCreateForm() {
             headers: headers,
             body: myFormDataAsJson
         }
-        const response = await fetch(FASTAPI_API_BACKEND, httpOptions)
+        const response = await fetch(DJANGO_API_BACKEND, httpOptions)
         if (response.ok) {
-            alert("Working thanks")
+            const responseData = await response.json()
+            setData(responseData)
             formRef.current.reset()
         } else {
             const rText = await response.text()
@@ -39,6 +41,7 @@ export default function PostCreateForm() {
 
 
     return <>
+        {data && JSON.stringify(data)}
         <form ref={formRef} onSubmit={handleSubmit}>
             <textarea name='content' required placeholder="Your content"
             className='border rounded w-full border-gray-300 p-3'

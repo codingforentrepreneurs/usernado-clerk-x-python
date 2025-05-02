@@ -8,7 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel
 
+CLERK_FRONTEND_HOST = os.environ.get("CLERK_FRONTEND_HOST")
+CLERK_FRONTEND_HOST2 = os.environ.get("CLERK_FRONTEND_HOST2")
 CLERK_SECRET_KEY = os.environ.get("CLERK_SECRET_KEY")
+
+
+authorized_parties=[CLERK_FRONTEND_HOST]
+if CLERK_FRONTEND_HOST2:
+    authorized_parties.append(CLERK_FRONTEND_HOST2)
 
 app = FastAPI()
 app.add_middleware(
@@ -25,7 +32,7 @@ def get_clerk_user_id_from_request(request):
     request_state = sdk.authenticate_request(
         request,
         AuthenticateRequestOptions(
-            authorized_parties=['http://localhost:3002']
+            authorized_parties=[CLERK_FRONTEND_HOST]
         )
     )
     if not request_state.is_signed_in:

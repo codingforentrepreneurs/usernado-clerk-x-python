@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from posts.api import create_post_api_view
+from posts.api import list_or_create_post_api_view
 from .api import hello_world_api_view
 
 urlpatterns = [
-    path('api/posts/', create_post_api_view),
+    path('api/posts/', list_or_create_post_api_view),
     path('api/hello/', hello_world_api_view),
     path('admin/', admin.site.urls),
 ]

@@ -6,6 +6,8 @@ from clerk_backend_api.jwks_helpers import AuthenticateRequestOptions
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from pydantic import BaseModel
+
 CLERK_SECRET_KEY = os.environ.get("CLERK_SECRET_KEY")
 
 app = FastAPI()
@@ -37,3 +39,15 @@ def get_clerk_user_id_from_request(request):
 def read_root(request:Request):
     clerk_user_id = get_clerk_user_id_from_request(request)
     return {"hello": "world", "clerk_user_id": clerk_user_id}
+
+
+class PostCreateSchema(BaseModel):
+    content: str
+
+# HTTP POST -> /api/posts/
+@app.post("/api/posts/")
+def create_post(request:Request, payload: PostCreateSchema):
+    clerk_user_id = get_clerk_user_id_from_request(request)
+    print(payload.model_dump())
+    print(payload.content)
+    return {"content": payload.content}

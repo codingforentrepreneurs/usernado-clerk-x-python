@@ -25,7 +25,7 @@ export default function PostCreateForm() {
             headers: headers,
             body: myFormDataAsJson
         }
-        const response = await fetch(DJANGO_API_BACKEND, httpOptions)
+        const response = await fetch(FASTAPI_API_BACKEND, httpOptions)
         if (response.ok) {
             alert("Working thanks")
             formRef.current.reset()

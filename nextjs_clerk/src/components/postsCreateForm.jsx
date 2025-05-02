@@ -6,7 +6,7 @@ import { useRef, useState } from "react"
 const DJANGO_API_BACKEND = "http://localhost:8888/api/posts/"
 const FASTAPI_API_BACKEND = "http://localhost:8002/api/posts/"
 
-export default function PostCreateForm() {
+export default function PostCreateForm({mutate}) {
     const { getToken } = useAuth();
     const [data, setData] = useState('')
     const formRef = useRef(null)
@@ -31,6 +31,9 @@ export default function PostCreateForm() {
             const responseData = await response.json()
             setData(responseData)
             formRef.current.reset()
+            if (mutate) {
+                mutate()
+            }
         } else {
             const rText = await response.text()
             console.log(rText)

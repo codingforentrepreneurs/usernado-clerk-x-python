@@ -45,7 +45,7 @@ services:
       - ./nextjs_clerk/postcss.config.mjs:/app/postcss.config.mjs
     working_dir: /app
     env_file:
-      - .env
+      - .env.nextjs.local
     ports:
       - 3000:3000
     environment:
